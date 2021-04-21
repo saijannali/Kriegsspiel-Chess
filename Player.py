@@ -16,7 +16,7 @@
 # does not use minimax, because no heuristic involved. 
 
 
-
+# big inspiration for this code was the player.py from assignment A4. 
 import random
 from board import Board
 
@@ -27,12 +27,5 @@ class RandomPlayer():
         self.random = random.Random(max_depth)
 
     def findMove(self, given, enemyNo):
-        states = getRandomStates(given, enemyNo)
+        states = given.getRandomStates(enemyNo)
         return self.random.choice(states)
-    
-    def getRandomStates(board, enemyNo):
-        # takes board featuring player pieces. 
-        # For all empty spaces on the board, places any combination of viable pieces for enemy.
-        # since only number is known, no restriction on pieces beyond the max of a type a player can have (i.e., won't add 8 pawns)
-        # returns list of all random states. 
-        # 
