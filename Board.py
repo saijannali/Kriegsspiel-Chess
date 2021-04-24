@@ -5,7 +5,7 @@
 class Board:
     def __init__(self):
         # uses None to establish empty spaces
-        self.board = [[None for x in range(4)] for y in range(4)] #8x8 grid, each row in a list, 8 lists
+        self.board = [[None for x in range(4)] for y in range(4)]
         
         # separate boards for white and black. Above is umpire's board, which contains full information.
         # These exist to show to each player, so that the players at no point get access to the other player's board.
@@ -28,10 +28,18 @@ class Board:
         # 0 is white, 1 is black. This variable is changed after each move. 
         self.side = 0
 
+        #list of all possible moves
+        self.possibleMoves =[]
+
     # returns true if empty, false if not
     # def isEmpty(self,x,y) -> bool:
     def isEmpty(self, x, y):
         return self.board[y][x] == None
+
+    #move input in ['x','y'], return is valid
+    def makeMove(self, move: str) -> bool:
+
+
 
     def getAllValidMoves(self, side):
         return null
@@ -89,7 +97,26 @@ class Board:
             self.whiteNo -= 1
 
     def printBoard(self):
-        return null
+        return None
+
+    def isStaleMate(self):
+        return None
+    def isCheck(self):
+        if self.side == 0:
+            
+        else:
+
+        return None
+    def isCheckMate(self):
+        return None
+    def checkRules(self):
+        #check side
+        #if white
+        if (self.side == 0):
+            #check vertical
+            if()
+        # if black
+        else:
 
 for i in range(4): print(i)
 sample = Board()
