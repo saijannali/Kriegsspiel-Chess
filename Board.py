@@ -1,4 +1,4 @@
-import Player
+# import Player
 # import pieces
 
 # adjusted range to 4 to represent 4x4 board, and changes pieces used to fill in board.
@@ -40,6 +40,7 @@ class Board:
     # def makeMove(self, move: str) -> bool:
     #     return null
 
+    # may be useful for check function
     def getAllValidMoves(self, side):
         return null
         #TODO
@@ -88,11 +89,7 @@ class Board:
         if piece.isValid():
             space = piece.currSpace()
             if not self.board[y][x].isEmpty():
-                # alternatively, call whichSide() function for that piece, so self.board[][].whichSide()
-                if self.board[y][x] is black:
-                    return removePiece(x,y,1)
-                else:
-                    return removePiece(x,y,0)
+                return removePiece(x, y, piece.whichSide)
             self.board[y][x] = piece
             self.board[space[0]][space[1]] = None
             if self.side == 0:
@@ -122,12 +119,16 @@ class Board:
             self.whiteNo -= 1
 
     # needs work. Does not function, while below code snippet does.
-    # except, that below snippet prints the board twice for unknown reasons.
+    # code no longer prints twice, but this function still does not work.
+    # issue was that in importing other classes, they somehow ran Board again, printing the code again.
     def printBoard(self):
+        print("--------")
         for i in range(4):
+            line = ""
             for j in range(3):
-                print("|" + self.board[i][j], end= "|")
-            print("_ _ _ _\n")
+                line = line + "|" + self.board[i][j]
+            print(line + "|")
+        print("--------")
 
     # occurs when a player has no valid moves left
     def isStaleMate(self, side):
@@ -190,10 +191,4 @@ class Board:
 # this and above printBoard function are attempts to create a board. 
 sample = Board
 sample.fillBoard
-for i in range(4):
-    line = ""
-    for j in range(3):
-        line = line + "|" + str(i*j) + "|"
-    print(line)
-    print("_ _ _ _")
-sample.printBoard
+print(sample.printBoard(sample))
