@@ -18,14 +18,19 @@
 
 # big inspiration for this code was the player.py from assignment A4. 
 import random
-from board import Board
+from Board import Board
+# import pieces
 
 # this is the intial RandomPlayer class. 
 # Elements such as heuristics, minimax, sampling and more are loosely written but not yet implemented. 
 class RandomPlayer():
     def __init__(self):
-        self.random = random.Random(max_depth)
+        self.random = random.Random()
 
     def findMove(self, given, enemyNo):
-        states = given.getRandomStates(enemyNo)
-        return self.random.choice(states)
+        # states = given.getRandomStates(enemyNo)
+        # pick = self.random.choice(states)
+        # define what pieces is here
+        return None
+
+# minimax will be stored here. Monte carlo sampling will likely be implemented as modification to this minimax. 
