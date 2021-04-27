@@ -26,14 +26,22 @@ class King(Pieces):
     # pawn can move forward two spaces if first turn, one space all others
     # king can move all around one space
 
+    # gets all moves corresponding with movement type
+    # if 
     def moves(self):
         pass
 
-    def isValid(self):
+    # checks if the piece can move
+    def isValid(self, x, y):
         pass
 
+    #
     def currSpace(self):
         pass
 
+    #
     def lastSpace(self):
         pass
+
+    def whichSide(self):
+        return King.side

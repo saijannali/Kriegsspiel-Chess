@@ -18,7 +18,7 @@
 
 # big inspiration for this code was the player.py from assignment A4. 
 import random
-from Board import Board
+# from Board import Board
 # import pieces
 
 # this is the intial RandomPlayer class. 

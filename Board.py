@@ -5,14 +5,14 @@
 class Board:
     def __init__(self):
         # uses None to establish empty spaces
-        self.board = [[None for x in range(3)] for y in range(4)]
+        self.board = [["  " for x in range(3)] for y in range(4)]
         
         # separate boards for white and black. Above is umpire's board, which contains full information.
         # These exist to show to each player, so that the players at no point get access to the other player's board.
      
         # might not need umpire's board, instead use separate white and blackboards and have program check both. work on this later?
-        self.whiteBoard = [[None for x in range(3)] for y in range(4)]
-        self.blackBoard = [[None for x in range(3)] for y in range(4)]
+        self.whiteBoard = [["  " for x in range(3)] for y in range(4)]
+        self.blackBoard = [["  " for x in range(3)] for y in range(4)]
 
         # checks last moves made
         self.recentMove = ""
@@ -31,16 +31,12 @@ class Board:
         #list of all possible moves
         self.possibleMoves =[]
 
+    # checks if the given location is empty
     # returns true if empty, false if not
-    # def isEmpty(self,x,y) -> bool:
     def isEmpty(self, x, y):
         return self.board[y][x] == None
 
-    #move input in ['x','y'], return is valid
-    # def makeMove(self, move: str) -> bool:
-    #     return null
-
-    # may be useful for check function
+    # may be useful for isCheck function
     def getAllValidMoves(self, side):
         return null
         #TODO
@@ -84,26 +80,45 @@ class Board:
         # self.blackBoard[pos][3] = "RB"
         # the distinction is made so that when capturing a piece, the player will not attempt to capture its own pieces.
 
-    # makeMove returns a number based on the change in pieces. -1 will be read by the player as being an illegal move.
+    # makeMove returns a number based on the change in pieces. 
+    # needs way to indicate that move is illegal. 
+
+    # return function is important, in that players attempting to make a move only know if the move was valid or not.
     def makeMove(self, piece, x, y):
-        if piece.isValid():
+        if piece.isValid(x, y):
+            # gets the current space of the given piece
             space = piece.currSpace()
+            # if the space isn't empty, but the move is valid, then captures the other piece.
             if not self.board[y][x].isEmpty():
-                return removePiece(x, y, piece.whichSide)
+                # if the piece it lands on is on its own team, the move is invalid.
+                if self.board[y][x].whichSide() == piece.whichSide():
+                    return False
+                # otherwise, captures the piece and moves on. 
+                removePiece(x, y, piece.whichSide)
+            # places the piece on the space it wants to move to on the umpire board
             self.board[y][x] = piece
+            # replaces its current spot with nothing. 
             self.board[space[0]][space[1]] = None
+            
+            # does the same on for the moving side's board, and returns true to indicate valid move.
             if self.side == 0:
                 self.whiteBoard[y][x] = piece
                 self.whiteBoard[space[0]][space[1]] = None
+                return True
             else:
                 self.blackBoard[y][x] = piece
                 self.blackBoard[space[0]][space[1]] = None
-        return -1
-        # todo
+                return True
+        return False
 
     # takes stored current and previous position
     # or will previous position have to be based on a trace? most likely
     # in that case, looks at trace and undoes last move?
+    # trace could consist of each umpire board for each move. undoMove could look at last move from
+    # given side and reverse it using current position of piece in both states. Maybe?
+
+
+    # ignore for time being. only relevant with minimax
     def undoMove(self, piece):
         pass
 
@@ -118,17 +133,18 @@ class Board:
             self.whiteBoard[space[0]][space[1]] = None
             self.whiteNo -= 1
 
-    # needs work. Does not function, while below code snippet does.
-    # code no longer prints twice, but this function still does not work.
-    # issue was that in importing other classes, they somehow ran Board again, printing the code again.
+    # prints the boards for the umpire and each player side by side.
     def printBoard(self):
-        print("--------")
+        print("White's Board        Black's Board       Umpire's Board")
         for i in range(4):
             line = ""
+            line2 = ""
+            line3 = ""
             for j in range(3):
-                line = line + "|" + self.board[i][j]
-            print(line + "|")
-        print("--------")
+                line = line + "|" + str(self.whiteBoard[i][j])
+                line2 = line2 + "|" + str(self.blackBoard[i][j])
+                line3 = line3 + "|" + str(self.board[i][j])
+            print(line + "|         " + line2 + "|          " + line3 + "|          ")
 
     # occurs when a player has no valid moves left
     def isStaleMate(self, side):
@@ -175,8 +191,6 @@ class Board:
     # inefficient, but currently it is difficult to access a list in O(1) using means other than coordinates. 
 
 
-
-
     def checkRules(self):
         #check side
         #if white
@@ -189,6 +203,6 @@ class Board:
             pass
 
 # this and above printBoard function are attempts to create a board. 
-sample = Board
-sample.fillBoard
-print(sample.printBoard(sample))
+sample = Board()
+sample.fillBoard()
+sample.printBoard()
