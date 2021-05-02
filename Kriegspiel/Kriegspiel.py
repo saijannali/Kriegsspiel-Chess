@@ -21,7 +21,7 @@ class Kriegspiel():
         self.players = {0: player_1,
                         1: player_2}
         self.use_symbols = use_symbols
-        self.last_move = 1 #Who's move it was last
+        self.last_move = 1 #Whose move it was last
         self.referee = referee
         self.moves_made = 0
 
@@ -243,7 +243,8 @@ if __name__ == "__main__":
     if args.player2:
         p2 = player_types[args.player2](name="Black")
     else:
-        p2 = HumanPlayer(name="Black") 
+        # p2 changed to RandomPlayer from HumanPlayer -- this better serves testing.
+        p2 = RandomPlayer(name="Black") 
 
     #Set the layout
     if args.layout_file:

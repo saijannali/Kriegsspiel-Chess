@@ -139,7 +139,7 @@ class Referee():
             if echo: print("Youre putting them in checkmate")
             outputs.append(CheckMate(for_player=Kriegspiel.opponent_id(player_id)))
         #Move is legal:
-
+        
         #Would put other player in check
         if self.is_in_check(Kriegspiel.opponent_id(player_id), next_board):
             outputs.append(self.is_in_check(Kriegspiel.opponent_id(player_id), next_board))

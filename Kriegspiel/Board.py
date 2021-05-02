@@ -1,6 +1,10 @@
 class Board():
     def __init__(self, size=4, *args, **kwargs):        #*****
         self.board = [[0 for x in range(size)] for y in range(size)]
+        # sideboard is for the use of the ai player. 
+        # by establishing the location of every piece the player has, the entire board won't need to be scanned...
+        # ...in order for an ai player to establish what the available pieces are.
+        self.sideboard = {}     #*****
 
     def add_piece(self, loc_x, loc_y, piece):
         """
@@ -8,6 +12,9 @@ class Board():
         Any object in that cell gets replaced with no check./
         """
         self.board[loc_x][loc_y] = piece
+        # ideally allows for pieces to be added to/updated in the dictionary as each move passes
+        # not throughly tested enough for correctness 
+        self.sideboard[piece] = [loc_x, loc_y]      #*****
 
     def get_piece(self, loc):
         #Return the contents of a cell, given it's location
