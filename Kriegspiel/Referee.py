@@ -18,7 +18,6 @@ class Referee():
             y_range = list(range(_from[1], _to[1], -1))
         else:
             y_range = list(range(_from[1], _to[1]))
-
         if _from[0] > _to[0]:
             x_range = list(range(_from[0], _to[0], -1))
         else:

@@ -1,8 +1,4 @@
-RNBQKBNR
-PPPPPPPP
-00000000
-00000000
-00000000
-00000000
-pppppppp
-rnbqkbnr
+RQKR
+PPPP
+pppp
+rqkr

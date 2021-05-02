@@ -28,6 +28,8 @@ class Board():
         "To" cell gets replaced by the "from" contents.
         No checks are made as to whether the move is legal.
         """
+        print("MOVE FUNCTION")
+        print(to, _from)
         self.board[to[1]][to[0]] = self.board[_from[1]][_from[0]]
         self.board[_from[1]][_from[0]] = replace_from_with
 
@@ -75,4 +77,3 @@ class Board():
             piece_layout.append(temp_row)
         return piece_layout
 
-print_board()

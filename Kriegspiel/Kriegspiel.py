@@ -7,7 +7,7 @@ from Player import *
 from Referee import * 
 import argparse
 
-DEFAULT_LAYOUT = ["rqkr".upper(), "pppp".upper(), [0]*4, [0]*4, [0]*4, [0]*4, "pppp", "rqkr"] #**********
+DEFAULT_LAYOUT = ["rqkr".upper(), "pppp".upper(), "pppp", "rqkr"] #**********
 
 class Kriegspiel():
     def __init__(self,  player_1, player_2, referee, board_layout=None, use_symbols=True,):
