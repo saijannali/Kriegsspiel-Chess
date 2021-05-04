@@ -7,6 +7,25 @@ class Player():
     def __init__(self, name=None):
         self.name = name
 
+    # what are win conditions?
+    # game over in favor of player
+    # what about favorable positions? 
+    # give piece captures certain scores
+    # depth? make it on init, since function is difficult to take different bounds in. 
+    # except the player cannot know which piece they captured. 
+    # count by number of captures?
+
+    # ******
+    def heuristic(self, board):
+    # on losing game over
+        if board.is_game_over:
+            pass
+    # on winning game over
+
+    # non-game over states
+
+    # 
+
     def do_move(self, board):
         """
         Choose a move and return it in the form (from, to) where
@@ -93,7 +112,7 @@ class RandomPlayer(Player):
         print(board.sideboard)
         # pieces = {}
         # piecetype = []
-        board.print_board(show_key=True)
+        # board.print_board(show_key=True)
         # have get all pieces for side function to call here instead of loop?
 
         # (the below comment is for later)
@@ -134,8 +153,41 @@ class RandomPlayer(Player):
 
 # start of minimax player. not yet implemented.
 class mmPlayer(Player):
-
-    #will complete later
-    # as minimax, it will be structured similarly to 
+    def __init__(self, *args, **kwargs):
+        self.analyser = CheatAnalyser()
+        super().__init__(*args, **kwargs)
+        self.player = Player
+    
+    # will complete later
+    # as minimax, it will be structured about the same as a4's player
     def do_move(self, board):
-        pass
+        # check how else player name can be derived
+        if player.name == p1:
+            bestMove = 0
+            bestValue = -math.inf
+            start = 0
+            for piece in board.sideboard:
+                movelist = piece.get_moves
+                # currently judges the scores of random moves
+                # and has no depth
+                move = board.makeMove(movelist[random.randint(0, len(movelist)-1)])
+                score = self.heuristic(board)
+                if score >= bestValue:
+                    bestValue = score
+                    start = board.sideboard[piece]
+                    end = move
+            return (start, end)
+
+        else:
+            bestMove = 0
+            bestValue = -math.inf
+            start = 0
+            for piece in board.sideboard:
+                movelist = piece.get_moves
+                move = board.makeMove(movelist[random.randint(0, len(movelist)-1)])
+                score = self.heuristic(board)
+                if score >= bestValue:
+                    bestValue = score
+                    start = board.sideboard[piece]
+                    end = move
+            return (start, end)
