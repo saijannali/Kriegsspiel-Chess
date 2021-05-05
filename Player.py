@@ -170,14 +170,23 @@ class mmPlayer(Player):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.player = Player
-    
+
+    def getrandomStates(self, board):
+        starterBoard = board
+        boards = []
+        # for (length of set of all possible boards): place other player's pieces on board.
+        # consider available pieces, which is best done under assumption that players have same pieces
+        # if so, set variable to keep track of starting pieces and call it here. 
+        # place pieces in empty spaces
+        # when set collected, return set
+
     # due to restrictions on what do_move function calls want, do_move calls a helper function that performs minimax
     def do_move(self, board):
         start = self.mini(board, 2)[2]
         end = self.mini(board, 2)[1]
         return (start, end)
 
-    # complications with code prevent this from working
+    # based on Michael's group's A4 minimax
     def mini(self, board, depth):
         if depth == 0 or Referee.is_game_over(Referee, self.player, board):
             return self.heuristic(board)
@@ -189,7 +198,9 @@ class mmPlayer(Player):
             start = 0
             for piece in board.sideboard:
                 movelist = piece.get_moves
-                # currently judges the scores of random moves and has no depth
+                # currently judges the scores of random moves
+                # would call getRandomStates, and for all states would try minimax.
+                # would have summed and average the score to then be compared to the best value.
                 move = board.makeMove(movelist[random.randint(0, len(movelist)-1)])
                 score = self.mini(move, depth-1)
                 if score >= bestValue:
