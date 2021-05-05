@@ -159,7 +159,8 @@ class Kriegspiel():
         <Static>
         Get the letter coordinates, eg "a5", for a given numerical coordinate (0,6)
         """
-        #pylint: disable=E1136
+        # pylint: disable=E1136
+        # adjusted the output to reflect a 4x4 board.
         col_conversion = {b: a for a,b in zip(list("abcd"),[0,1,2,3])}                  #*********
         row_conversion = {b: a for a,b in zip(list("4321"),[0,1,2,3])}                  #*********
 

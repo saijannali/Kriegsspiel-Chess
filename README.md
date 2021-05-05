@@ -1,36 +1,32 @@
-### Chess Symbols 
-Game will use Chess symbols (♔) if they are available in the current character set. The pieces will default to letters if the unicode symbols are unavailable. 
-To change the CMD encoding to UTF-8 in Windows, use the command `chcp 65001`.
+# B351-Final
 
+### Structure of the Github Repository
+This repository contains files used in the final project. Previous files that were worked on but no longer used were deleted, but can be seen in the commit history.
+This was done to make the repository easy to understand.
+The final code is entirely contained within the "Kriegspiel" folder
 
-### Player info
-|   Color   |   ID      |   Case    |   Board   |
-|-----------|-----------|-----------|-----------|
-|   White   |   0       |   UPPER   |   top     |
-|   Black   |   1       |   lower   |   bottom  |
+### Running the project
+In order to run the project, access the Kriegspiel folder and open Kriegspiel.py.
 
+Within this file are settings for the game. In the code block starting on line 239, the players can be set. By default, Player 1 is a human and Player 2 is the Random Player. The subsequent code blocks influence the referee type and gamemode and are set to standard rules.
 
-### Running the game
-For a list of options for running the game, run Kriegspiel.py with the -h flag.
+In an IDE or command line, run Kriegspiel.py and the game will begin.
 
-`> python Kriegspiel.py -h`
+### Playing the game
+With the presets, Player 1 is the human and will be prompted to move. Player input should follow this format: "start_space end_space", where the player input omits the quotes. An example would be "b3 a2" to move white's pawn to capture. If an incorrect input or illegal move is made, the referee will notify the player and ask for a new input.
 
-```
-usage: Kriegspiel.py [-h] [-l LAYOUT_FILE] [-r {0,1,fair,laxx}]
-                     [-g {debug,pvp,testing}] [-p1 {human,random}]
-                     [-p2 {human,random}]
-optional arguments:
-  -h, --help            show this help message and exit
-  -l LAYOUT_FILE, --layout_file LAYOUT_FILE
-                        The filepath of the layout you wish to load.
-  -r {0,1,fair,laxx}, --referee {0,1,fair,laxx}
-                        The type of referee.
-  -g {debug,pvp,testing}, --gamemode {debug,pvp,testing}
-                        The game mode to use.
-  -p1 {human,random}, --player1 {human,random}
-                        The type of player one.
-  -p2 {human,random}, --player2 {human,random}
-                        The type of player two.
-```
+The referee output on each turn will show the player any of their previous moves and outcomes of those moves, in addition to a board containing only their pieces. This gives the player ample information to understand which pieces are available to move and how each piece is expected to move. 
 
-The application has been tested using Windows 10 but should also run under linux and mac.
+As in regular chess, the game is played until a checkmate or stalemate is reached, after which the outcome is declared.
+
+### How Files Work
+Kriegspiel is used to run the game and set the rules. It also determines starting position, which can be changed on line 10. 
+Board is used to create the board for each player, and is used by the referee to determine legality. 
+Referee checks player moves and returns an output based on the rules of the game. It also prevents illegal moves from being made. It contains multiple types of referees, but "fair" is the standard used. 
+Referee output is used to determine what the referee tells the player. 
+CheatAnalyser is used to facilitate referee outputs. 
+ChessPiece defines each piece, their movement patterns and importance.
+Player contains all player options to be used. This includes RandomPlayer, HumanPlayer, and the basis of a Minimax player. 
+
+Our 4x4 board follows the Silverman 4x4 layout, with 2 rooks, a king, a queen, and 4 pawns for each player. This can be modified to include any combination of pieces, as long as it contains a king. For stability, there should be 8 pieces on each side, restricted to their respective two rows.
+

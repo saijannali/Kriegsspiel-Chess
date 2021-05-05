@@ -6,6 +6,10 @@ class Board():
         # ...in order for an ai player to establish what the available pieces are.
         self.sideboard = {}     #*****
 
+        # for use in the heuristic and random board creation
+        self.p1piececount = 8
+        self.p2piececount = 8
+
     def add_piece(self, loc_x, loc_y, piece):
         """
         Add any object to the board at an x, y position.
@@ -39,6 +43,13 @@ class Board():
         print(to, _from)
         self.board[to[1]][to[0]] = self.board[_from[1]][_from[0]]
         self.board[_from[1]][_from[0]] = replace_from_with
+
+    def get_random_states(self, player):
+        # pseudocode to attempt to replicate the idea
+
+        # 
+        pass
+
 
     def print_board(self, show_key=False):
         """

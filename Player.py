@@ -2,29 +2,47 @@ import itertools
 from ChessPiece import ChessPiece
 import random
 from CheatAnalyser import CheatAnalyser
+from Referee import Referee
 
 class Player():
     def __init__(self, name=None):
         self.name = name
 
-    # what are win conditions?
-    # game over in favor of player
-    # what about favorable positions? 
-    # give piece captures certain scores
-    # depth? make it on init, since function is difficult to take different bounds in. 
-    # except the player cannot know which piece they captured. 
-    # count by number of captures?
 
-    # ******
+    # Heuristic is determined by whether the player wins, or makes notable gains.
+    
+    # Win condition: game over in favor of the player
+
+    # Favorable outcomes: 
+    #   - Given piece captures a piece
+    #       - This is a greedy approach, but enemy piece count is the most reliable metric to measure progress. 
+    #       - As opposed to standard chess, the player does not know enemy pieces, so value of capture cannot influence decision.
+    #       - This needs to be done without putting oneself in check, which the program will prevent anyways.  
+    #   - Gets out of check, which is a given for the game's rules.
+    #       - Essentially, the given move should be legal and get as much as possible.
+
     def heuristic(self, board):
-    # on losing game over
-        if board.is_game_over:
-            pass
-    # on winning game over
+        # on losing game over:
+        if Referee.is_game_over(self.name, board):
+            return 0
+        #checking which player is the opponent
+        name = ""
+        if self.name == "White":
+            name = "Black"
+        if self.name == "Black":
+            name = "White"
+        # on winning game over:
+        if Referee.is_game_over(name, board):
+            return 200
 
-    # non-game over states
+        # non-game over state:
 
-    # 
+        # based on player, returns number of enemy pieces left. 
+        # The fewer pieces left, the better the score
+        if self.name == "White":
+            return 10 - board.p2piececount
+        if self.name == "Black":
+            return 10 - board.p1piececount
 
     def do_move(self, board):
         """
@@ -85,109 +103,112 @@ class HumanPlayer(Player):
 class RandomPlayer(Player):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.player = Player
-
 
     # what defines a random move?
-    # takes a random piece
-    # considers what that piece is, gets all spaces based on movement
-    # picks any random space. if invalid, removes it from list and picks another. 
-    # does that mean list is global variable?
-    # should makeMove insert list, so that recursion can have it removed?
-    # second option better
+    #   - takes a random piece
+    #   - considers what that piece is, gets all moves based on piece
+    #   - picks any random move. if invalid, removes it from list and picks another. 
+    #   - if this move is deemed illegal by the referee, do_move is called again
 
-    # alternatively, pick different piece and move combo. 
-    # a move is a starting position and end position. 
-    # output is from cell, end cell
-    # should try to avoid hell no moves at all costs.
-    # so randomly pick piece, get list of moves from that, pick randomly from list of moves. 
-    
-
-
-
-    # Note: this function was written after the old RandomPlayer was discarded.
-    # name is preserved due to function using do_move for all players
     def do_move(self, board):
-        # dictionary of the pieces on the board and a list of their types.
-        print(board.sideboard)
-        # pieces = {}
-        # piecetype = []
-        # board.print_board(show_key=True)
-        # have get all pieces for side function to call here instead of loop?
+        """
+        sideboard is the dictionary of the pieces on the board and their current locations.
+        remove the comment on the below line to see. 
+        This and below lines are useful for testing, but are cheating if playing. 
+        """
+        # print(board.sideboard)
 
-        # (the below comment is for later)
-        # this function, tied with self.white or self.black in Board, allows the ai to access its pieces faster than
-        # the previous implementation, which scanned the entire board for each attempted move. 
-        # for i in range(0,4):
-        #     for j in range(0,4):
-        #         if not board.cell_is_free((j, i)):
-        #             pieces[board.get_piece((j, i))] = (j, i) 
-        #             piecetype.append(board.get_piece((j,i)))
+        """
+        shows the player's board each attempted move.
+        remove comment for clarity on the random player's position, but note that it will print multiple times each AI turn.
+        """
+        # board.print_board(show_key=True)
+
+
+        # a list of each piece available, which will be taken from the dictionary.
         keyslist = []
-        # this aims to reduce complexity. 
-        # instead of looping through all 16 spaces every ai move,
-        # it only loops through the number of pieces the player has each attempt.
-        # this hopefully takes less time, especially when there are multiple failed moves.
+
+        # loops through dictionary of player's pieces rather than all 16 spaces of the board.
+        # this is intended to take less time, especially when there are multiple failed attempts.
         for i in board.sideboard:
             keyslist.append(i)
+
+        # from the available pieces, takes a random one.
         chosenpiece = keyslist[random.randint(0, len(keyslist)-1)]
+
+        # gets the location of the chosen piece, and uses its coordinates to get a start location.
         current = board.sideboard[chosenpiece]
         start = (current[0], current[1])
-        # this only gets the type of piece
-        # gets the type of piece based on what is available
-        # piece = piecetype[random.randint(0, len(pieces)-1)]
-        # gets the current position of the randomly selected piece.
-        # start = pieces.get(piece)
 
-        # gets a list of all moves from the piece. 
-        # adjust so that only valid moves are available. 
+        # gets a list of all moves for the piece and chooses one at random.
         moves = chosenpiece.get_moves()
         moveindex = random.randint(0, len(moves)-1)
         end = moves[moveindex]
-        end = (start[0]-end[0]%4, start[1]-end[1]%4)
-        print("start:" + str(start))
-        print("end:" + str(end))
-        # currently works after some attempts, but ref now returns both sides moves to p1
-        # why is it doing that?
+
+        # checks if the move is inbounds, rerolls until it is.
+        # this effectively locks in the piece to be used, unless that piece cannot be used at all.
+        while (start[0]-end[0] > 3 or start[0]-end[0] < 0 or start[1]-end[1] > 3 or start[1]-end[1] < 0):
+            moves.remove(end)
+            moveindex = random.randint(0, len(moves)-1)
+            end = moves[moveindex]
+
+        # once a valid move is found, the endpoint is set.
+        end = (start[0]-end[0], start[1]-end[1])
+        
+        """
+        The below comments can be used in testing to see what the ai ultimately picked as its move.
+        """
+        # print("Start:" + str(start))
+        # print("End:" + str(end))
+
+        # returns the start and end locations the player wants to do. 
         return (start, end)
 
-# start of minimax player. not yet implemented.
+
+
 class mmPlayer(Player):
     def __init__(self, *args, **kwargs):
-        self.analyser = CheatAnalyser()
         super().__init__(*args, **kwargs)
         self.player = Player
     
-    # will complete later
-    # as minimax, it will be structured about the same as a4's player
+    # due to restrictions on what do_move function calls want, do_move calls a helper function that performs minimax
     def do_move(self, board):
-        # check how else player name can be derived
-        if player.name == p1:
+        start = self.mini(board, 2)[2]
+        end = self.mini(board, 2)[1]
+        return (start, end)
+
+    # complications with code prevent this from working
+    def mini(self, board, depth):
+        if depth == 0 or Referee.is_game_over(Referee, self.player, board):
+            return self.heuristic(board)
+
+        # player 1's move
+        if self.player == "White":
             bestMove = 0
             bestValue = -math.inf
             start = 0
             for piece in board.sideboard:
                 movelist = piece.get_moves
-                # currently judges the scores of random moves
-                # and has no depth
+                # currently judges the scores of random moves and has no depth
                 move = board.makeMove(movelist[random.randint(0, len(movelist)-1)])
-                score = self.heuristic(board)
+                score = self.mini(move, depth-1)
                 if score >= bestValue:
                     bestValue = score
                     start = board.sideboard[piece]
                     end = move
-            return (start, end)
+            return (bestValue, end, piece)
 
+        # player 2's move; with the current presets, the AI is always player 2.
         else:
             bestMove = 0
-            bestValue = -math.inf
+            bestValue = math.inf
             start = 0
             for piece in board.sideboard:
                 movelist = piece.get_moves
                 move = board.makeMove(movelist[random.randint(0, len(movelist)-1)])
-                score = self.heuristic(board)
-                if score >= bestValue:
+                score = self.mini(move, depth-1)
+                if score <= bestValue:
                     bestValue = score
                     start = board.sideboard[piece]
                     end = move
-            return (start, end)
+            return (bestValue, end, piece)
