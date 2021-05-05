@@ -112,14 +112,14 @@ class Queen(ChessPiece):
         self.name = "Queen"
         self.symbols = {0: "♕", 1: "♛"}
         self.letters = {0: "Q", 1: "q"}
-        up_moves = [(0,i) for i in range(0,4)]
-        down_moves = [(0,i) for i in range(-4,0)]
-        right_moves = [(i,0) for i in range(0,4)]
-        left_moves = [(i,0) for i in range(-4, 0)]
-        up_right = [(a,a) for a in range(0,4)]
-        down_right = [(a,-a) for a in range(0,4)]
-        up_left = [(-a,a) for a in range(0,4)]
-        down_left = [(-a,-a) for a in range(0,4)]
+        up_moves = [(0,i) for i in range(0,8)]
+        down_moves = [(0,i) for i in range(-8,0)]
+        right_moves = [(i,0) for i in range(0,8)]
+        left_moves = [(i,0) for i in range(-8, 0)]
+        up_right = [(a,a) for a in range(0,8)]
+        down_right = [(a,-a) for a in range(0,8)]
+        up_left = [(-a,a) for a in range(0,8)]
+        down_left = [(-a,-a) for a in range(0,8)]
         self._moves = list(itertools.chain(up_right, down_right, up_left, down_left, down_moves, up_moves, right_moves, left_moves))
 
         super().__init__(*args, **kwargs)
@@ -129,10 +129,10 @@ class Rook(ChessPiece):
         self.name = "Rook"
         self.symbols = {0: "♖", 1: "♜"}
         self.letters = {0: "R", 1: "r"}
-        up_moves = [(0,i) for i in range(0,4)]
-        down_moves = [(0,i) for i in range(-4,0)]
-        right_moves = [(i,0) for i in range(0,4)]
-        left_moves = [(i,0) for i in range(-4, 0)]
+        up_moves = [(0,i) for i in range(0,8)]
+        down_moves = [(0,i) for i in range(-8,0)]
+        right_moves = [(i,0) for i in range(0,8)]
+        left_moves = [(i,0) for i in range(-8, 0)]
         self._moves = list(itertools.chain(down_moves, up_moves, right_moves, left_moves))
         super().__init__(*args, **kwargs)
 
@@ -150,9 +150,9 @@ class Bishop(ChessPiece):
         self.name = "Bishop"
         self.symbols = {0: "♗", 1: "♝"}
         self.letters = {0: "B", 1: "b"}
-        up_right = [(a,a) for a in range(0,4)]
-        down_right = [(a,-a) for a in range(0,4)]
-        up_left = [(-a,a) for a in range(0,4)]
-        down_left = [(-a,-a) for a in range(0,4)]
+        up_right = [(a,a) for a in range(0,8)]
+        down_right = [(a,-a) for a in range(0,8)]
+        up_left = [(-a,a) for a in range(0,8)]
+        down_left = [(-a,-a) for a in range(0,8)]
         self._moves = list(itertools.chain(up_right, down_right, up_left, down_left))
         super().__init__(*args, **kwargs)

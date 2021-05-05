@@ -32,12 +32,12 @@ class BoardBuilder():
         
         font_choice = ("Courier", 16)
 
-        self.matrix = [[0 for x in range(8)] for y in range(8)]
-        self.button_matrix = [[0 for x in range(8)] for y in range(8)]
+        self.matrix = [[0 for x in range(4)] for y in range(4)]                     #*******
+        self.button_matrix = [[0 for x in range(4)] for y in range(4)]              #*******
 
         self.piece_symbols = {"0": ""}
 
-        black_pieces = list("prnbkq")
+        black_pieces = list("prnbkq")                                       
         white_pieces = list("PRNBKQ")
 
         factory = PieceFactory()
@@ -54,11 +54,11 @@ class BoardBuilder():
             1: "#bababa",
         }
 
-        for i in range(0,8):
-            for j in range(0,8):
-                if (i == 0 or i ==1):
+        for i in range(0,4):                                                #************
+            for j in range(0,4):                                            #************
+                if (i == 0 or i ==1):                                       #************
                     r = "sunken"
-                elif (i==6 or i == 7):
+                elif (i==2 or i == 3):                                      #************
                     r= "raised"
                 else:
                     r = "flat"
@@ -81,7 +81,7 @@ class BoardBuilder():
                             variable=self.current_piece, value=piece, font=font_choice)
             b.grid(row=r, column=1)
 
-        Radiobutton(piece_frame, text="␡", variable=self.current_piece, value="0", font=font_choice).grid(row=8, column=0)
+        Radiobutton(piece_frame, text="␡", variable=self.current_piece, value="0", font=font_choice).grid(row=4, column=0)      #*****
 
         Button(piece_frame, text="Save", command= lambda: self.save_matrix(filesavebox(default='.\\*.txt')), font=font_choice, relief="groove").grid(row=10, column=0, columnspan=2)
         Button(piece_frame, text="Clear", command= lambda: self.clear(), font=("Courier", 10), relief="groove").grid(row=11, column=0, columnspan=2,)
@@ -104,7 +104,7 @@ class BoardBuilder():
             return False
         
     def clear(self):
-        self.matrix = [[0 for x in range(8)] for y in range(8)]
+        self.matrix = [[0 for x in range(4)] for y in range(4)]                                 #*********************
         for row in self.button_matrix:
             for b in row:
                 b.config(text="")

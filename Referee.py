@@ -18,7 +18,6 @@ class Referee():
             y_range = list(range(_from[1], _to[1], -1))
         else:
             y_range = list(range(_from[1], _to[1]))
-
         if _from[0] > _to[0]:
             x_range = list(range(_from[0], _to[0], -1))
         else:
@@ -71,7 +70,7 @@ class Referee():
         """
         moving_piece = board.get_piece(_from)
         #Is the _to location on the board?
-        if _to[0] < 0 or _to[0]>= 4 or _to[1] < 0 or _to[1] >= 4:
+        if ((_to[0] >= 4) or (_to[1] >= 4)):                                    #************
             return False 
         
         #Would you put yourself into check?
@@ -140,7 +139,7 @@ class Referee():
             if echo: print("Youre putting them in checkmate")
             outputs.append(CheckMate(for_player=Kriegspiel.opponent_id(player_id)))
         #Move is legal:
-
+        
         #Would put other player in check
         if self.is_in_check(Kriegspiel.opponent_id(player_id), next_board):
             outputs.append(self.is_in_check(Kriegspiel.opponent_id(player_id), next_board))
@@ -251,7 +250,6 @@ class Referee():
 
     
     def is_move_legal(self, _from, _to, player_id, board, echo=False):
-        print(_from, _to)
         return self._is_move_legal(_from, _to, player_id, board, echo=echo)
     
     def evaluate_state(self, board):

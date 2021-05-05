@@ -1,16 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #pylint: disable=W0614,E0102,E0213
-from ChessPiece import Pawn, Rook, King, Queen, PieceFactory, ChessPiece
+from ChessPiece import Pawn, Rook, Knight, Bishop, King, Queen, PieceFactory, ChessPiece
 from Board import Board
 from Player import *
 from Referee import * 
 import argparse
 
-# DEFAULT_LAYOUT = ["rnbqkbnr".upper(), "pppppppp".upper(), [0]*8, [0]*8, [0]*8, [0]*8, "pppppppp", "rnbqkbnr"]
-
-DEFAULT_LAYOUT = ["rqkr".upper(), "pppp".upper(), "pppp", "rqkr"]
-
+DEFAULT_LAYOUT = ["rqkr".upper(), "pppp".upper(), "pppp", "rqkr"] #**********
 
 class Kriegspiel():
     def __init__(self,  player_1, player_2, referee, board_layout=None, use_symbols=True,):
@@ -24,7 +21,7 @@ class Kriegspiel():
         self.players = {0: player_1,
                         1: player_2}
         self.use_symbols = use_symbols
-        self.last_move = 1 #Who's move it was last
+        self.last_move = 1 #Whose move it was last
         self.referee = referee
         self.moves_made = 0
 
@@ -83,10 +80,7 @@ class Kriegspiel():
 
         is_valid_move = False
         while not is_valid_move:
-            # print("start")
             _from, _to = current_player.do_move(self.get_board_for_player(current_player_id))
-            # print("main", _from, _to, self.last_move, self.board)
-            
             is_valid_move = self.referee.is_move_legal(_from=_from, _to=_to, player_id=self.last_move, board= self.board)
             move_output = self.referee.verify_move(_from=_from, _to=_to, board=self.board, player_id=self.last_move, player_name=self.players[self.last_move].name)
 
@@ -102,7 +96,7 @@ class Kriegspiel():
         self.move_piece(_from, _to, player_id=self.last_move)
 
         #If the piece is a pawn and it is reaching the other side of the board, give a promotion:
-        if isinstance(self.board.get_piece(_to), Pawn) and _to[1] in [0, 3]:
+        if isinstance(self.board.get_piece(_to), Pawn) and _to[1] in [0, 3]:                                #***********
             promoted_piece = self.board.get_piece(_to).promote()
             self.board.add_piece(_to[1], _to[0], promoted_piece)
 
@@ -166,8 +160,8 @@ class Kriegspiel():
         Get the letter coordinates, eg "a5", for a given numerical coordinate (0,6)
         """
         #pylint: disable=E1136
-        col_conversion = {b: a for a,b in zip(list("abcdefgh"),[0,1,2,3,4,5,6,7])}
-        row_conversion = {b: a for a,b in zip(list("87654321"),[0,1,2,3,4,5,6,7])}
+        col_conversion = {b: a for a,b in zip(list("abcd"),[0,1,2,3])}                  #*********
+        row_conversion = {b: a for a,b in zip(list("4321"),[0,1,2,3])}                  #*********
 
         col = col_conversion[cell[0]]
         row = row_conversion[cell[1]]
@@ -249,7 +243,8 @@ if __name__ == "__main__":
     if args.player2:
         p2 = player_types[args.player2](name="Black")
     else:
-        p2 = HumanPlayer(name="Black") 
+        # p2 changed to RandomPlayer from HumanPlayer -- this better serves testing.
+        p2 = RandomPlayer(name="Black") 
 
     #Set the layout
     if args.layout_file:
@@ -257,8 +252,6 @@ if __name__ == "__main__":
             layout = layout_file.read().splitlines()
     else:
         layout = DEFAULT_LAYOUT
-    
-    print(layout)
 
     #Set the type of referee
     if args.referee:
