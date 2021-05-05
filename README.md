@@ -2,8 +2,7 @@
 
 ### Structure of the Github Repository
 This repository contains files used in the final project. Previous files that were worked on but no longer used were deleted, but can be seen in the commit history.
-This was done to make the repository easy to understand.
-The final code is entirely contained within the "Kriegspiel" folder
+This was done to make the repository easy to read.
 
 ### Running the project
 In order to run the project, access the Kriegspiel folder and open Kriegspiel.py.
